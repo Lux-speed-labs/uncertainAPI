@@ -105,6 +105,5 @@ jobs:
           virtualenvs-in-project: true
 
       - name: Check if lock file is up to date
-        run: |
-          poetry lock --check
+        run: poetry check --lock
 
