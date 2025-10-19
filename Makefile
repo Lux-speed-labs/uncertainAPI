@@ -69,7 +69,7 @@ install:
 	$(call install_poetry) && \
 	poetry config virtualenvs.in-project true && \
 	poetry env remove --all 2>/dev/null || true && \
-	poetry install --no-dev
+	poetry install --only main
 	@echo "\033[0;32mVirtual environment created at .venv/\033[0m"
 
 # Install with development dependencies (creates venv in root directory)
@@ -78,7 +78,7 @@ install-dev:
 	$(call install_poetry) && \
 	poetry config virtualenvs.in-project true && \
 	poetry env remove --all 2>/dev/null || true && \
-	poetry install
+	poetry install --extras dev
 	@echo "\033[0;32mVirtual environment created at .venv/\033[0m"
 
 # Update poetry.lock with latest dependencies
