@@ -1,4 +1,4 @@
-.PHONY: help install install-dev clean test test-cov lint lint/fix format type-check build publish shell run check-venv
+.PHONY: help install install-dev lock lock-no-update clean test test-cov lint lint/fix format type-check build publish shell run check-venv
 
 # Activate virtual environment
 ACTIVATE := . .venv/bin/activate
@@ -42,6 +42,8 @@ help:
 	@echo "Setup:"
 	@echo "  make install        Install package and create virtual environment"
 	@echo "  make install-dev    Install with development dependencies"
+	@echo "  make lock           Update poetry.lock with latest dependencies"
+	@echo "  make lock-no-update Update poetry.lock without updating dependencies"
 	@echo ""
 	@echo "Development:"
 	@echo "  make shell          Activate virtual environment shell"
@@ -78,6 +80,18 @@ install-dev:
 	poetry env remove --all 2>/dev/null || true && \
 	poetry install
 	@echo "\033[0;32mVirtual environment created at .venv/\033[0m"
+
+# Update poetry.lock with latest dependencies
+lock: check-venv
+	@echo "Updating poetry.lock..."
+	$(ACTIVATE) && poetry lock
+	@echo "\033[0;32m✓ Lock file updated!\033[0m"
+
+# Update poetry.lock without updating dependencies
+lock-no-update: check-venv
+	@echo "Updating poetry.lock (no update)..."
+	$(ACTIVATE) && poetry lock --no-update
+	@echo "\033[0;32m✓ Lock file updated!\033[0m"
 
 # Activate shell in virtual environment
 shell: check-venv
