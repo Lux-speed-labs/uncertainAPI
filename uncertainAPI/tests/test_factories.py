@@ -13,6 +13,8 @@ class TestBrowserFactory:
 
     def test_get_playwright_backend(self) -> None:
         """Test getting Playwright backend."""
+        # Optional extra: pip install uncertainapi[playwright]
+        pytest.importorskip("playwright")
         settings = {
             "BACKEND": "uncertainAPI.browsers.playwright.PlaywrightBackend",
             "HEADLESS": True,
@@ -26,6 +28,8 @@ class TestBrowserFactory:
 
     def test_get_requests_backend(self) -> None:
         """Test getting Requests backend."""
+        # Optional extra: pip install uncertainapi[requests] (BeautifulSoup)
+        pytest.importorskip("bs4")
         settings = {
             "BACKEND": "uncertainAPI.browsers.requests.RequestsBackend",
             "TIMEOUT": 30,
@@ -49,6 +53,8 @@ class TestAIProviderFactory:
 
     def test_get_openai_provider(self) -> None:
         """Test getting OpenAI provider."""
+        # Optional extra: pip install uncertainapi[openai]
+        pytest.importorskip("openai")
         settings = {
             "BACKEND": "uncertainAPI.ai.providers.openai.OpenAIProvider",
             "API_KEY": "test-key",
