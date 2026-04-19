@@ -6,8 +6,10 @@ standard logging module with a more powerful and user-friendly alternative.
 
 from __future__ import annotations
 
+import logging
 import sys
 from pathlib import Path
+from types import FrameType
 from typing import Any
 
 from loguru import logger
@@ -124,21 +126,26 @@ def configure_loguru_for_django(settings: Any) -> None:
 
 
 # Intercept standard logging and redirect to loguru
-class InterceptHandler:
+class InterceptHandler(logging.Handler):
     """Intercept standard logging calls and redirect to loguru.
 
     This allows libraries using standard logging to work with loguru.
     """
 
-    def write(self, message: str) -> None:
-        """Write log message."""
-        # Find caller from where originated the logged message
-        frame, depth = sys._getframe(6), 6
-        while frame and frame.f_code.co_filename == __file__:
+    def emit(self, record: logging.LogRecord) -> None:
+        """Forward a stdlib log record to loguru."""
+        try:
+            level = logger.level(record.levelname).name
+        except ValueError:
+            level = str(record.levelno)
+
+        frame: FrameType | None = logging.currentframe()
+        depth = 2
+        while frame is not None and frame.f_code.co_filename == logging.__file__:
             frame = frame.f_back
             depth += 1
 
-        logger.opt(depth=depth, exception=None).info(message.rstrip())
+        logger.opt(depth=depth, exception=record.exc_info).log(level, record.getMessage())
 
 
 def setup_django_loguru_intercept() -> None:
@@ -146,8 +153,6 @@ def setup_django_loguru_intercept() -> None:
 
     Call this in your Django settings or AppConfig.ready().
     """
-    import logging
-
     # Intercept everything at the root logger
     logging.root.handlers = [InterceptHandler()]
     logging.root.setLevel(logging.INFO)

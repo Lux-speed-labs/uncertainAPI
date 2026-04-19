@@ -124,5 +124,5 @@ class ExtractionSession(models.Model):
         """
         if not self.expires_at:
             return False
-        return timezone.now() > self.expires_at
+        return bool(timezone.now() > self.expires_at)
 

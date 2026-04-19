@@ -5,11 +5,11 @@ from __future__ import annotations
 import asyncio
 import functools
 from loguru import logger
-from typing import Any, Callable, TypeVar
+from typing import Any, Callable, Coroutine, TypeVar
 
 T = TypeVar("T")
 
-def run_in_executor(func: Callable[..., T]) -> Callable[..., asyncio.Future[T]]:
+def run_in_executor(func: Callable[..., T]) -> Callable[..., Coroutine[Any, Any, T]]:
     """Decorator to run sync functions in executor.
 
     Use this for CPU-bound or sync I/O operations that need to be called

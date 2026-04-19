@@ -62,13 +62,17 @@ class RequestsBackend:
     async def navigate(self, url: str) -> None:
         """Navigate to the given URL."""
         await self._ensure_initialized()
+        client = self._client
+        if client is None:
+            raise BrowserError("HTTP client not initialized")
         logger.debug("browser.navigate.start", extra={"url": url})
         try:
-            response = await self._client.get(url)
+            response = await client.get(url)
             response.raise_for_status()
             self._current_url = url
             self._current_html = response.text
-            self._soup = self._BeautifulSoup(self._current_html, "lxml")
+            html = self._current_html or ""
+            self._soup = self._BeautifulSoup(html, "lxml")
             logger.info("browser.navigate.success", extra={"url": url, "status": response.status_code})
         except Exception as exc:
             logger.warning("browser.navigate.failed", extra={"url": url, "error": str(exc)})
@@ -125,6 +129,9 @@ class RequestsBackend:
     async def get_cookies(self) -> list[dict[str, Any]]:
         """Get all cookies from the current client."""
         await self._ensure_initialized()
+        client = self._client
+        if client is None:
+            raise BrowserError("HTTP client not initialized")
         logger.debug("browser.get_cookies")
         try:
             cookies = [
@@ -135,7 +142,7 @@ class RequestsBackend:
                     "path": "/",
                     "secure": False,
                 }
-                for name, value in self._client.cookies.items()
+                for name, value in client.cookies.items()
             ]
             logger.debug("browser.get_cookies.success", extra={"count": len(cookies)})
             return cookies
@@ -146,10 +153,13 @@ class RequestsBackend:
     async def set_cookies(self, cookies: list[dict[str, Any]]) -> None:
         """Set cookies in the current client."""
         await self._ensure_initialized()
+        client = self._client
+        if client is None:
+            raise BrowserError("HTTP client not initialized")
         logger.debug("browser.set_cookies", extra={"count": len(cookies)})
         try:
             for cookie in cookies:
-                self._client.cookies.set(
+                client.cookies.set(
                     name=cookie["name"],
                     value=cookie["value"],
                     domain=cookie.get("domain", ""),

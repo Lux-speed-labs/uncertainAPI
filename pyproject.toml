@@ -52,6 +52,8 @@ dev = [
     "black>=23.0",
     "ruff>=0.1.0",
     "mypy>=1.0",
+    "django-stubs[compatible-mypy]>=5.0.0",
+    "djangorestframework-stubs>=3.15.0",
 ]
 playwright = [
     "playwright>=1.40.0",
@@ -145,6 +147,7 @@ ignore = ["N999"]  # Ignore invalid module name for package name
 
 [tool.mypy]
 python_version = "3.12"
+plugins = ["mypy_django_plugin.main"]
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
@@ -154,3 +157,32 @@ no_implicit_optional = true
 warn_redundant_casts = true
 warn_unused_ignores = true
 strict_equality = true
+exclude = [
+    "^uncertainAPI/migrations/",
+    "^uncertainAPI/tests/",
+]
+# Optional integrations are not installed in every environment (extras).
+[[tool.mypy.overrides]]
+module = "uncertainAPI.browsers.selenium"
+ignore_errors = true
+[[tool.mypy.overrides]]
+module = "uncertainAPI.browsers.playwright"
+ignore_errors = true
+[[tool.mypy.overrides]]
+module = "uncertainAPI.tasks.celery"
+ignore_errors = true
+[[tool.mypy.overrides]]
+module = "uncertainAPI.ai.providers.litellm"
+ignore_errors = true
+[[tool.mypy.overrides]]
+module = "uncertainAPI.ai.providers.anthropic"
+ignore_errors = true
+[[tool.mypy.overrides]]
+module = "uncertainAPI.agents.orchestrator"
+ignore_errors = true
+[[tool.mypy.overrides]]
+module = "uncertainAPI.agents.async_tools"
+disable_error_code = ["import-untyped"]
+
+[tool.django-stubs]
+django_settings_module = "uncertainAPI.mypy_django_settings"

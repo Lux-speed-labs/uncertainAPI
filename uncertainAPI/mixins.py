@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from loguru import logger
-from typing import Any, Optional, Type
+from typing import Any, Optional, Type, cast
 
 from django.db import models
 from pydantic import BaseModel
@@ -47,8 +47,8 @@ class PersistenceMixin:
         model_class = self.get_model_class()
         data_dict = data.model_dump()
 
-        # Create or update
-        instance, created = model_class.objects.update_or_create(
+        # Create or update (django-stubs: .objects on abstract Model type)
+        instance, created = model_class.objects.update_or_create(  # type: ignore[attr-defined]
             defaults=data_dict,
             **self.get_unique_fields(data_dict),
         )
@@ -59,7 +59,7 @@ class PersistenceMixin:
             extra={"model": model_class.__name__, "pk": instance.pk},
         )
 
-        return instance
+        return cast(models.Model, instance)
 
     def get_unique_fields(self, data_dict: dict[str, Any]) -> dict[str, Any]:
         """Get fields to use for unique lookup.
@@ -89,7 +89,10 @@ class PersistenceMixin:
             List of extracted data instances.
         """
         # Extract data using parent class
-        extracted_data = await super().extract_data(url, request)  # type: ignore[misc]
+        extracted_data = cast(
+            list[BaseModel],
+            await super().extract_data(url, request),  # type: ignore[misc]
+        )
 
         # Persist each item (database operations should use async ORM)
         # For now, we'll run sync saves in executor to avoid blocking
