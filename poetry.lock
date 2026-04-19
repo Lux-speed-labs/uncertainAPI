@@ -954,7 +954,7 @@ description = "Distro - an OS platform information API"
 optional = true
 python-versions = ">=3.6"
 groups = ["main"]
-markers = "extra == \"openai\" or extra == \"full\" or extra == \"litellm\" or extra == \"anthropic\""
+markers = "extra == \"dev\" or extra == \"openai\" or extra == \"full\" or extra == \"litellm\" or extra == \"anthropic\""
 files = [
     {file = "distro-1.9.0-py3-none-any.whl", hash = "sha256:7bffd925d65168f85027d8da9af6bddab658135b840670a223589bc0c8ef02b2"},
     {file = "distro-1.9.0.tar.gz", hash = "sha256:2fa77c6fd8940f116ee1d6b94a2f90b13b5ea8d019b98bc8bafdcabcdd9bdbed"},
@@ -1754,7 +1754,7 @@ description = "Fast iterable JSON parser."
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"openai\" or extra == \"full\" or extra == \"litellm\" or extra == \"anthropic\""
+markers = "extra == \"dev\" or extra == \"openai\" or extra == \"full\" or extra == \"litellm\" or extra == \"anthropic\""
 files = [
     {file = "jiter-0.14.0-cp310-cp310-macosx_10_12_x86_64.whl", hash = "sha256:02f36a5c700f105ac04a6556fe664a59037a2c200db3b7e88784fac2ddf02531"},
     {file = "jiter-0.14.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:41eab6c09ceffb6f0fe25e214b3068146edb1eda3649ca2aee2a061029c7ba2e"},
@@ -2593,7 +2593,7 @@ description = "The official Python library for the openai API"
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"openai\" or extra == \"full\" or extra == \"litellm\""
+markers = "extra == \"dev\" or extra == \"openai\" or extra == \"full\" or extra == \"litellm\""
 files = [
     {file = "openai-2.28.0-py3-none-any.whl", hash = "sha256:79aa5c45dba7fef84085701c235cf13ba88485e1ef4f8dfcedc44fc2a698fc1d"},
     {file = "openai-2.28.0.tar.gz", hash = "sha256:bb7fdff384d2a787fa82e8822d1dd3c02e8cf901d60f1df523b7da03cbb6d48d"},
@@ -3695,7 +3695,7 @@ description = "Sniff out which async library your code is running under"
 optional = true
 python-versions = ">=3.7"
 groups = ["main"]
-markers = "extra == \"selenium\" or extra == \"full\" or extra == \"openai\" or extra == \"litellm\" or extra == \"anthropic\""
+markers = "extra == \"dev\" or extra == \"openai\" or extra == \"full\" or extra == \"litellm\" or extra == \"selenium\" or extra == \"anthropic\""
 files = [
     {file = "sniffio-1.3.1-py3-none-any.whl", hash = "sha256:2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2"},
     {file = "sniffio-1.3.1.tar.gz", hash = "sha256:f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc"},
@@ -3882,7 +3882,7 @@ description = "Fast, Extensible Progress Meter"
 optional = true
 python-versions = ">=3.7"
 groups = ["main"]
-markers = "extra == \"openai\" or extra == \"full\" or extra == \"litellm\""
+markers = "extra == \"dev\" or extra == \"openai\" or extra == \"full\" or extra == \"litellm\""
 files = [
     {file = "tqdm-4.67.3-py3-none-any.whl", hash = "sha256:ee1e4c0e59148062281c49d80b25b67771a127c85fc9676d3be5f243206826bf"},
     {file = "tqdm-4.67.3.tar.gz", hash = "sha256:7d825f03f89244ef73f1d4ce193cb1774a8179fd96f31d7e1dcde62092b960bb"},
@@ -3957,6 +3957,38 @@ rich = ">=10.11.0"
 shellingham = ">=1.3.0"
 
 [[package]]
+name = "types-beautifulsoup4"
+version = "4.12.0.20250516"
+description = "Typing stubs for beautifulsoup4"
+optional = true
+python-versions = ">=3.9"
+groups = ["main"]
+markers = "extra == \"dev\""
+files = [
+    {file = "types_beautifulsoup4-4.12.0.20250516-py3-none-any.whl", hash = "sha256:5923399d4a1ba9cc8f0096fe334cc732e130269541d66261bb42ab039c0376ee"},
+    {file = "types_beautifulsoup4-4.12.0.20250516.tar.gz", hash = "sha256:aa19dd73b33b70d6296adf92da8ab8a0c945c507e6fb7d5db553415cc77b417e"},
+]
+
+[package.dependencies]
+types-html5lib = "*"
+
+[[package]]
+name = "types-html5lib"
+version = "1.1.11.20260408"
+description = "Typing stubs for html5lib"
+optional = true
+python-versions = ">=3.10"
+groups = ["main"]
+markers = "extra == \"dev\""
+files = [
+    {file = "types_html5lib-1.1.11.20260408-py3-none-any.whl", hash = "sha256:d18dc4b90d6d6745585790b920db13ede43e1f8ff6ee1ac0ceb0dec4223a06fa"},
+    {file = "types_html5lib-1.1.11.20260408.tar.gz", hash = "sha256:8a281aa367bc77dbc758358cd9bef79530f2d154eeed9b33705bb035a0dab9e4"},
+]
+
+[package.dependencies]
+types-webencodings = "*"
+
+[[package]]
 name = "types-pyyaml"
 version = "6.0.12.20260408"
 description = "Typing stubs for PyYAML"
@@ -3967,6 +3999,19 @@ markers = "extra == \"dev\""
 files = [
     {file = "types_pyyaml-6.0.12.20260408-py3-none-any.whl", hash = "sha256:fbc42037d12159d9c801ebfcc79ebd28335a7c13b08a4cfbc6916df78fee9384"},
     {file = "types_pyyaml-6.0.12.20260408.tar.gz", hash = "sha256:92a73f2b8d7f39ef392a38131f76b970f8c66e4c42b3125ae872b7c93b556307"},
+]
+
+[[package]]
+name = "types-webencodings"
+version = "0.5.0.20260408"
+description = "Typing stubs for webencodings"
+optional = true
+python-versions = ">=3.10"
+groups = ["main"]
+markers = "extra == \"dev\""
+files = [
+    {file = "types_webencodings-0.5.0.20260408-py3-none-any.whl", hash = "sha256:19a2afe5c22d9b1e880b49ff823c7b531f473a390fe47ac903c0bdb5cd677dd9"},
+    {file = "types_webencodings-0.5.0.20260408.tar.gz", hash = "sha256:28c596619f367e43eee393d85f63e8d2fdb6874c654a8d441c37f8afe29c6d0d"},
 ]
 
 [[package]]
@@ -4312,7 +4357,7 @@ type = ["pytest-mypy"]
 anthropic = ["anthropic"]
 background-tasks = ["django-background-tasks"]
 celery = ["celery", "redis"]
-dev = ["black", "django-stubs", "djangorestframework-stubs", "mypy", "pytest", "pytest-asyncio", "pytest-cov", "pytest-django", "ruff"]
+dev = ["black", "django-stubs", "djangorestframework-stubs", "mypy", "openai", "pytest", "pytest-asyncio", "pytest-cov", "pytest-django", "ruff", "types-beautifulsoup4"]
 django-q = ["django-q2"]
 full = ["anthropic", "beautifulsoup4", "celery", "django-background-tasks", "django-q2", "litellm", "lxml", "openai", "playwright", "redis", "selenium"]
 litellm = ["litellm"]
@@ -4324,4 +4369,4 @@ selenium = ["selenium"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12"
-content-hash = "5c3d77559983186bc895affc58fc502611e2a74e164cb5de82c0c7df1c12fdcf"
+content-hash = "6c43149b7eb45add84a1746f9c4530fc2749e0d6f2d013710e9240d90013acee"
