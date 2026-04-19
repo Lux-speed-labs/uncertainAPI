@@ -11,9 +11,9 @@ jobs:
     name: Test (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
       fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13"]
 
     steps:
       - uses: actions/checkout@v4
@@ -30,37 +30,28 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Load cached venv
-        id: cached-poetry-dependencies
+      - name: Cache Poetry environment
         uses: actions/cache@v4
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
-      - name: Install dependencies with dev extras
-        run: poetry install --no-interaction --extras dev
+      - name: Install dependencies
+        run: poetry install --no-interaction --extras dev --extras playwright --extras requests --extras openai
 
-      - name: Run tests with coverage
+      - name: Tests with coverage
         run: make test-cov
 
-      - name: Upload coverage reports
-        if: matrix.python-version == '3.12'
-        uses: codecov/codecov-action@v4
-        with:
-          files: ./htmlcov/index.html
-          fail_ci_if_error: false
-
-  lint:
-    name: Lint & Type Check
+  quality:
+    name: Lock check, lint, type check
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
@@ -69,41 +60,20 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Load cached venv
-        id: cached-poetry-dependencies
+      - name: Cache Poetry environment
         uses: actions/cache@v4
         with:
           path: .venv
-          key: venv-${{ runner.os }}-3.12-${{ hashFiles('**/poetry.lock') }}
+          key: venv-${{ runner.os }}-3.13-quality-${{ hashFiles('**/poetry.lock') }}
 
-      - name: Install dependencies with dev extras
+      - name: Install dependencies
         run: poetry install --no-interaction --extras dev
 
-      - name: Run linter
-        run: make lint
-
-      - name: Run type checker
-        run: make type-check
-
-  lock-check:
-    name: Check Lock File
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: latest
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-
-      - name: Check if lock file is up to date
+      - name: Verify lock file matches pyproject
         run: poetry check --lock
 
+      - name: Lint
+        run: make lint
+
+      - name: Type check
+        run: make type-check

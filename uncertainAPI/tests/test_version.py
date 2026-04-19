@@ -2,7 +2,6 @@
 
 import uncertainAPI
 
-
 def test_version_exists() -> None:
     """Test that the version attribute exists."""
     assert hasattr(uncertainAPI, "__version__")
