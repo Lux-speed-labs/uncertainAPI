@@ -2,7 +2,7 @@
 
 **AI-Powered Web Extraction Framework** - Extract data from any website using multi-agent AI orchestration.
 
-[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/downloads/)
+[![Python Version](https://img.shields.io/badge/python-3.12%2B-blue)](https://www.python.org/downloads/)
 [![Django](https://img.shields.io/badge/django-4.2%2B-green)](https://www.djangoproject.com/)
 [![Async](https://img.shields.io/badge/async-first-brightgreen)](ASYNC_ARCHITECTURE.md)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)

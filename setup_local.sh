@@ -7,12 +7,10 @@ echo "🚀 UncertainAPI Local Setup"
 echo "============================"
 echo ""
 
-# Check Python version
-PYTHON_VERSION=$(python3 --version | cut -d' ' -f2 | cut -d'.' -f1,2)
-echo "✓ Python version: $PYTHON_VERSION"
-
-if (( $(echo "$PYTHON_VERSION < 3.8" | bc -l) )); then
-    echo "❌ Python 3.8+ required"
+# Check Python version (must match pyproject.toml requires-python)
+echo "✓ Python version: $(python3 --version)"
+if ! python3 -c "import sys; sys.exit(0 if sys.version_info >= (3, 12) else 1)"; then
+    echo "❌ Python 3.12 or newer required"
     exit 1
 fi
 

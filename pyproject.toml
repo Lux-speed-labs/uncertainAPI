@@ -11,17 +11,14 @@ authors = [
 ]
 license = "MIT"
 readme = "README.md"
-requires-python = ">= 3.8"
+requires-python = ">=3.12"
 keywords = ["uncertainAPI", "API", "Python", "AI", "Python Framework"]
 classifiers = [
     "Development Status :: 1 - Planning",
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "License :: OSI Approved :: MIT License",
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
@@ -81,13 +78,27 @@ celery = [
     "redis>=5.0.0",
 ]
 django-q = [
-    "django-q2>=1.6.0",
+    # 1.6.0 has invalid overlapping Django markers on PyPI; 1.6.1+ fixes metadata.
+    # django-q2 declares Requires-Python: <4; marker avoids capping this package's requires-python.
+    'django-q2>=1.6.1; python_version < "4"',
 ]
 background-tasks = [
     "django-background-tasks>=1.2.0",
 ]
+# Flattened union of the extras above — do not use uncertainAPI[...] here; that is a
+# self-dependency and breaks poetry lock / pip metadata.
 full = [
-    "uncertainAPI[playwright,selenium,requests,openai,anthropic,litellm,celery,django-q,background-tasks]",
+    "playwright>=1.40.0",
+    "selenium>=4.0",
+    "beautifulsoup4>=4.12.0",
+    "lxml>=4.9.0",
+    "openai>=1.0",
+    "anthropic>=0.20.0",
+    "litellm>=1.0",
+    "celery>=5.3.0",
+    "redis>=5.0.0",
+    'django-q2>=1.6.1; python_version < "4"',
+    "django-background-tasks>=1.2.0",
 ]
 
 [tool.poetry]
@@ -113,12 +124,12 @@ addopts = "-v --cov=uncertainAPI --cov-report=term-missing"
 
 [tool.black]
 line-length = 100
-target-version = ["py38", "py39", "py310", "py311"]
+target-version = ["py312", "py313"]
 include = '\.pyi?$'
 
 [tool.ruff]
 line-length = 100
-target-version = "py38"
+target-version = "py312"
 select = [
     "E",   # pycodestyle errors
     "W",   # pycodestyle warnings
@@ -133,7 +144,7 @@ select = [
 ignore = ["N999"]  # Ignore invalid module name for package name
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.12"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
