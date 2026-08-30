@@ -10,13 +10,11 @@ from uncertainAPI.core.interfaces import (
     MappingEngine,
     RuntimeObserver,
     SourceAdapter,
+    SourceAdapterResolver,
 )
 from uncertainAPI.core.plan import IntegrationPlan
 from uncertainAPI.core.types import ExecutionContext, ExecutionResult
-
-
-class AdapterNotFoundError(RuntimeError):
-    """Raised when no registered source adapter supports a source."""
+from uncertainAPI.runtime.resolver import FirstMatchAdapterResolver
 
 
 class NullRuntimeObserver:
@@ -51,20 +49,13 @@ class IntegrationRuntime:
         mapper: MappingEngine,
         validator: ContractValidator,
         observer: RuntimeObserver | None = None,
+        adapter_resolver: SourceAdapterResolver | None = None,
     ) -> None:
         self._adapters = tuple(adapters)
         self._mapper = mapper
         self._validator = validator
         self._observer = observer or NullRuntimeObserver()
-
-    def _adapter_for(self, plan: IntegrationPlan) -> SourceAdapter:
-        source = plan.integration.source
-        for adapter in self._adapters:
-            if adapter.supports(source):
-                return adapter
-        raise AdapterNotFoundError(
-            f"No source adapter registered for source type {source.type!r}"
-        )
+        self._adapter_resolver = adapter_resolver or FirstMatchAdapterResolver()
 
     async def execute(
         self,
@@ -81,7 +72,11 @@ class IntegrationRuntime:
         await self._observer.started(context)
 
         try:
-            adapter = self._adapter_for(plan)
+            adapter = await self._adapter_resolver.resolve(
+                plan.integration.source,
+                self._adapters,
+                context,
+            )
             payload = await adapter.fetch(plan.integration.source, context)
             records = await self._mapper.map(
                 payload,
