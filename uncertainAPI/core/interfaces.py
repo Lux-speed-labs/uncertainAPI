@@ -26,6 +26,23 @@ class SourceAdapter(Protocol):
 
 
 @runtime_checkable
+class SourceAdapterResolver(Protocol):
+    """Select the adapter/provider that should execute a source.
+
+    OSS can use a simple first-match implementation. CertainAPI Cloud can inject
+    proprietary cost-, reliability-, policy-, or geography-aware routing.
+    """
+
+    async def resolve(
+        self,
+        source: SourceSpec,
+        adapters: Sequence[SourceAdapter],
+        context: ExecutionContext,
+    ) -> SourceAdapter:
+        ...
+
+
+@runtime_checkable
 class MappingEngine(Protocol):
     """Transform raw source payloads into canonical record candidates."""
 
@@ -100,4 +117,61 @@ class PlanRegistry(Protocol):
         ...
 
     async def put(self, plan: Any) -> None:
+        ...
+
+
+@runtime_checkable
+class CheckpointStore(Protocol):
+    """Persist incremental execution state without coupling to Redis/Postgres."""
+
+    async def get(self, integration_id: str, key: str) -> Any | None:
+        ...
+
+    async def set(self, integration_id: str, key: str, value: Any) -> None:
+        ...
+
+
+@runtime_checkable
+class SecretResolver(Protocol):
+    """Resolve an opaque secret reference at execution time."""
+
+    async def resolve(self, reference: str) -> Any:
+        ...
+
+
+@runtime_checkable
+class DestinationAdapter(Protocol):
+    """Deliver validated canonical records to an external destination."""
+
+    def supports(self, destination: dict[str, Any]) -> bool:
+        ...
+
+    async def deliver(
+        self,
+        records: Sequence[dict[str, Any]],
+        destination: dict[str, Any],
+        context: ExecutionContext,
+    ) -> None:
+        ...
+
+
+@runtime_checkable
+class RateLimiter(Protocol):
+    """Wait until a named execution scope is permitted to continue."""
+
+    async def acquire(self, key: str, *, cost: float = 1.0) -> None:
+        ...
+
+
+@runtime_checkable
+class JobDispatcher(Protocol):
+    """Dispatch an integration execution without coupling to a queue vendor."""
+
+    async def dispatch(
+        self,
+        integration_id: str,
+        *,
+        plan_version: str | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> str:
         ...
