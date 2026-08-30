@@ -6,10 +6,17 @@ not Django, DRF, browser vendors, observability vendors, or task systems.
 
 from uncertainAPI.core.interfaces import (
     ArtifactStore,
+    CheckpointStore,
     ContractValidator,
+    DestinationAdapter,
+    JobDispatcher,
     MappingEngine,
+    PlanRegistry,
+    RateLimiter,
     RuntimeObserver,
+    SecretResolver,
     SourceAdapter,
+    SourceAdapterResolver,
 )
 from uncertainAPI.core.plan import IntegrationPlan
 from uncertainAPI.core.specs import (
@@ -21,13 +28,20 @@ from uncertainAPI.core.specs import (
 
 __all__ = [
     "ArtifactStore",
+    "CheckpointStore",
     "ContractSpec",
     "ContractValidator",
+    "DestinationAdapter",
     "IntegrationPlan",
     "IntegrationSpec",
+    "JobDispatcher",
     "MappingEngine",
     "MappingSpec",
+    "PlanRegistry",
+    "RateLimiter",
     "RuntimeObserver",
+    "SecretResolver",
     "SourceAdapter",
+    "SourceAdapterResolver",
     "SourceSpec",
 ]
