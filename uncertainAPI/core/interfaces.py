@@ -6,7 +6,7 @@ frameworks. Third parties can implement them without modifying uncertainAPI.
 
 from __future__ import annotations
 
-from typing import Any, Protocol, Sequence, runtime_checkable
+from collections.abc import Sequence\nfrom typing import Any, Protocol, runtime_checkable
 
 from uncertainAPI.core.specs import ContractSpec, MappingSpec, SourceSpec
 from uncertainAPI.core.types import ExecutionContext, ExecutionResult, RawPayload
