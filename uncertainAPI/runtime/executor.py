@@ -91,9 +91,9 @@ class IntegrationRuntime:
             result = ExecutionResult(
                 records=validated,
                 metadata={
+                    **payload.metadata,
                     "plan_version": plan.plan_version,
                     "ir_version": plan.ir_version,
-                    **payload.metadata,
                 },
             )
             await self._observer.succeeded(context, result)
