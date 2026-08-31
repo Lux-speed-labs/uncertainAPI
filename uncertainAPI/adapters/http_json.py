@@ -6,7 +6,7 @@ httpx; install `uncertainapi[http]` to use HTTPJSONAdapter.
 
 from __future__ import annotations
 
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from uncertainAPI.core.specs import SourceSpec
 from uncertainAPI.core.types import ExecutionContext, RawPayload
@@ -23,7 +23,7 @@ class HTTPJSONAdapter:
     def __init__(
         self,
         *,
-        client: "httpx.AsyncClient | None" = None,
+        client: httpx.AsyncClient | None = None,
         timeout: float = 30.0,
     ) -> None:
         self._client = client
