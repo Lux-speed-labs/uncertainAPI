@@ -33,7 +33,11 @@ class ContractSpec(BaseModel):
 
     name: str
     version: str
-    schema: dict[str, Any] = Field(description="Language-neutral JSON Schema")
+    json_schema: dict[str, Any] = Field(
+        alias="schema",
+        serialization_alias="schema",
+        description="Language-neutral JSON Schema",
+    )
     metadata: dict[str, Any] = Field(default_factory=dict)
 
 
