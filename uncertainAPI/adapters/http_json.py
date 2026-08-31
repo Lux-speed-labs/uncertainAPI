@@ -1,13 +1,18 @@
-"""Deterministic HTTP/JSON source adapter."""
+"""Deterministic HTTP/JSON source adapter.
+
+This adapter is optional. Importing uncertainAPI core/runtime does not require
+httpx; install `uncertainapi[http]` to use HTTPJSONAdapter.
+"""
 
 from __future__ import annotations
 
-from typing import Any
-
-import httpx
+from typing import Any, TYPE_CHECKING
 
 from uncertainAPI.core.specs import SourceSpec
 from uncertainAPI.core.types import ExecutionContext, RawPayload
+
+if TYPE_CHECKING:
+    import httpx
 
 
 class HTTPJSONAdapter:
@@ -18,7 +23,7 @@ class HTTPJSONAdapter:
     def __init__(
         self,
         *,
-        client: httpx.AsyncClient | None = None,
+        client: "httpx.AsyncClient | None" = None,
         timeout: float = 30.0,
     ) -> None:
         self._client = client
@@ -28,6 +33,14 @@ class HTTPJSONAdapter:
         return source.type.lower() in self.source_types
 
     async def fetch(self, source: SourceSpec, context: ExecutionContext) -> RawPayload:
+        try:
+            import httpx
+        except ImportError as exc:
+            raise ImportError(
+                "HTTPJSONAdapter requires the optional HTTP dependency. "
+                "Install with: pip install 'uncertainapi[http]'"
+            ) from exc
+
         owns_client = self._client is None
         client = self._client or httpx.AsyncClient(timeout=self._timeout)
         try:
