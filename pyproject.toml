@@ -35,8 +35,25 @@ Repository = "https://github.com/Lux-speed-labs/uncertainAPI"
 http = [
     "httpx>=0.25.0,<1.0",
 ]
+mapping = [
+    "jmespath>=1.0.1,<2.0",
+]
+validation = [
+    "jsonschema>=4.20,<5.0",
+]
+runtime = [
+    "jmespath>=1.0.1,<2.0",
+    "jsonschema>=4.20,<5.0",
+]
+standard = [
+    "httpx>=0.25.0,<1.0",
+    "jmespath>=1.0.1,<2.0",
+    "jsonschema>=4.20,<5.0",
+]
 dev = [
     "httpx>=0.25.0,<1.0",
+    "jmespath>=1.0.1,<2.0",
+    "jsonschema>=4.20,<5.0",
     "pytest>=7.0",
     "pytest-cov>=4.0",
     "pytest-asyncio>=0.21.0",
