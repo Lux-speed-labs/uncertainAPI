@@ -1,11 +1,9 @@
-"""uncertainAPI - AI-powered web extraction framework.
+"""uncertainAPI — lightweight runtime for portable data integrations.
 
-A Django/DRF framework for intelligent data extraction from any website
-using multi-agent AI orchestration.
+The 0.2 core is framework- and provider-independent. Optional capabilities are
+added through public interfaces rather than embedded infrastructure stacks.
 """
 
-__version__ = "0.1.2-dev"
-
-default_app_config = "uncertainAPI.apps.UncertainAPIConfig"
+__version__ = "0.2.0-dev"
 
 __all__ = ["__version__"]
