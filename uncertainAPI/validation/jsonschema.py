@@ -40,7 +40,7 @@ class JSONSchemaContractValidator:
                 "Install with: pip install 'uncertainapi[validation]'"
             ) from exc
 
-        validator_type = getattr(module, "Draft202012Validator")
+        validator_type = module.Draft202012Validator
         validator_type.check_schema(contract.json_schema)
         validator = validator_type(contract.json_schema)
 
