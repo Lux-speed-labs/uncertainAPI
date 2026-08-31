@@ -57,13 +57,18 @@ pip install uncertainapi
 
 The default package intentionally has a very small dependency surface.
 
-Optional direct HTTP support:
+Optional capability sets:
 
 ```bash
-pip install "uncertainapi[http]"
+pip install "uncertainapi[http]"        # REST/JSON + GraphQL transport
+pip install "uncertainapi[mapping]"     # JMESPath mapping
+pip install "uncertainapi[validation]"  # JSON Schema validation
+pip install "uncertainapi[standard]"    # deterministic runtime MVP
 ```
 
-Future phases will add optional adapters for mature OSS ecosystems such as dlt and mapping/validation engines without making them mandatory core dependencies.
+The standard runtime combines HTTP/GraphQL acquisition, JMESPath mapping, and
+JSON Schema validation while keeping each component replaceable through the
+public protocols.
 
 ## Minimal example
 
@@ -104,6 +109,17 @@ runtime = IntegrationRuntime(
 
 result = await runtime.execute(plan)
 ```
+
+For the built-in deterministic composition:
+
+```python
+from uncertainAPI.runtime import create_standard_runtime
+
+runtime = create_standard_runtime()
+result = await runtime.execute(plan)
+```
+
+See [Phase 2 — Reusable Deterministic Runtime MVP](docs/architecture/PHASE_2_RUNTIME_MVP.md).
 
 ## What UncertainAPI does not intend to rebuild
 
