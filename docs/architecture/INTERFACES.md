@@ -268,5 +268,6 @@ The `feature/0.2-interface-runtime` branch introduces:
 - dependency-injected `IntegrationRuntime`
 - initial deterministic `HTTPJSONAdapter`
 
-Django/DRF and AG2 are being moved from mandatory dependencies to optional
-integration extras.
+The legacy Django/DRF, AG2, built-in browser, task, and project-scaffolding
+architecture has been removed from the 0.2 code path. Those capabilities may
+return only through narrowly scoped interfaces when a later phase justifies them.
