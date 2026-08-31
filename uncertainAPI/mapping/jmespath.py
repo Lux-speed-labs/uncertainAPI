@@ -59,7 +59,7 @@ def _search(expression: str, data: object) -> object:
             "Install with: pip install 'uncertainapi[mapping]'"
         ) from exc
 
-    search = getattr(module, "search")
+    search = module.search
     result: object = search(expression, data)
     return result
 
