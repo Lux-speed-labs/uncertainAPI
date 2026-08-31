@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence\nfrom typing import Any
+from collections.abc import Sequence
+from typing import Any
 
 import pytest
 
