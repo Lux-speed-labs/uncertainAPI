@@ -6,7 +6,8 @@ frameworks. Third parties can implement them without modifying uncertainAPI.
 
 from __future__ import annotations
 
-from collections.abc import Sequence\nfrom typing import Any, Protocol, runtime_checkable
+from collections.abc import Sequence
+from typing import Any, Protocol, runtime_checkable
 
 from uncertainAPI.core.specs import ContractSpec, MappingSpec, SourceSpec
 from uncertainAPI.core.types import ExecutionContext, ExecutionResult, RawPayload
@@ -27,11 +28,7 @@ class SourceAdapter(Protocol):
 
 @runtime_checkable
 class SourceAdapterResolver(Protocol):
-    """Select the adapter/provider that should execute a source.
-
-    OSS can use a simple first-match implementation. CertainAPI Cloud can inject
-    proprietary cost-, reliability-, policy-, or geography-aware routing.
-    """
+    """Select the adapter/provider that should execute a source."""
 
     async def resolve(
         self,
@@ -57,7 +54,7 @@ class MappingEngine(Protocol):
 
 @runtime_checkable
 class ContractValidator(Protocol):
-    """Validate canonical records against a language-neutral contract."""
+    """Validate canonical records against a stable contract."""
 
     async def validate(
         self,
@@ -70,7 +67,7 @@ class ContractValidator(Protocol):
 
 @runtime_checkable
 class RuntimeObserver(Protocol):
-    """Observe execution without being coupled to a telemetry vendor."""
+    """Observe execution without coupling the runtime to a telemetry vendor."""
 
     async def started(self, context: ExecutionContext) -> None:
         ...
@@ -122,7 +119,7 @@ class PlanRegistry(Protocol):
 
 @runtime_checkable
 class CheckpointStore(Protocol):
-    """Persist incremental execution state without coupling to Redis/Postgres."""
+    """Persist incremental execution state without coupling to a backend."""
 
     async def get(self, integration_id: str, key: str) -> Any | None:
         ...
