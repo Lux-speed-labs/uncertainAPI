@@ -1,4 +1,0 @@
-"""Database migrations for uncertainAPI."""
-
-
-
