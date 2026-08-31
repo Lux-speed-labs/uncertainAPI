@@ -22,7 +22,10 @@ class FakeAdapter:
         return source.type == "fake"
 
     async def fetch(self, source: SourceSpec, context: ExecutionContext) -> RawPayload:
-        return RawPayload(data={"items": [{"sku": "ABC", "price": 42}]})
+        return RawPayload(
+            data={"items": [{"sku": "ABC", "price": 42}]},
+            metadata={"plan_version": "spoofed", "ir_version": -1, "provider": "fake"},
+        )
 
 
 class FakeMapper:
@@ -79,3 +82,6 @@ async def test_runtime_executes_through_interfaces() -> None:
     result = await runtime.execute(plan)
 
     assert result.records == [{"product_id": "ABC", "price": 42}]
+    assert result.metadata["plan_version"] == "1"
+    assert result.metadata["ir_version"] == 1
+    assert result.metadata["provider"] == "fake"
