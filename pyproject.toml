@@ -33,9 +33,6 @@ dependencies = [
 Homepage = "https://uncertainapi.com/"
 Repository = "https://github.com/Lux-speed-labs/uncertainAPI"
 
-[project.scripts]
-uncertainapi = "uncertainAPI.cli:main"
-
 [project.optional-dependencies]
 http = [
     "httpx>=0.25.0",
@@ -51,6 +48,9 @@ django = [
 ]
 cli = [
     "click>=8.0",
+    "django>=4.2",
+    "djangorestframework>=3.14",
+    "loguru>=0.7.0",
 ]
 agents = [
     "ag2>=0.10.0",
