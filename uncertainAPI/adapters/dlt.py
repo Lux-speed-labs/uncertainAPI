@@ -249,7 +249,7 @@ def _records_from_item(item: object) -> list[dict[str, Any]]:
     if isinstance(item, dict):
         return [_string_keyed_dict(item)]
 
-    if isinstance(item, (list, tuple)):
+    if isinstance(item, list | tuple):
         records: list[dict[str, Any]] = []
         for value in item:
             records.extend(_records_from_item(value))
