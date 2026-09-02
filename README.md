@@ -64,6 +64,7 @@ pip install "uncertainapi[http]"        # REST/JSON + GraphQL transport
 pip install "uncertainapi[mapping]"     # JMESPath mapping
 pip install "uncertainapi[validation]"  # JSON Schema validation
 pip install "uncertainapi[standard]"    # deterministic runtime MVP
+pip install "uncertainapi[dlt]"         # dlt connector ecosystem
 ```
 
 The standard runtime combines HTTP/GraphQL acquisition, JMESPath mapping, and
@@ -120,6 +121,27 @@ result = await runtime.execute(plan)
 ```
 
 See [Phase 2 — Reusable Deterministic Runtime MVP](docs/architecture/PHASE_2_RUNTIME_MVP.md).
+
+### dlt connector ecosystem
+
+Phase 3 adds one generic optional adapter for dlt sources rather than
+source-specific UncertainAPI connectors:
+
+```python
+from uncertainAPI.adapters import DltSourceAdapter, StaticDltSourceRegistry
+
+adapter = DltSourceAdapter(
+    registry=StaticDltSourceRegistry({
+        "supplier": supplier_source,
+    })
+)
+```
+
+The corresponding plan uses `type="dlt"`, a factory reference, and optionally a
+single resource name. New dlt sources can be registered without changing the
+UncertainAPI executor or adding a new adapter class.
+
+See [Phase 3 — Connector Ecosystem Through dlt](docs/architecture/PHASE_3_CONNECTOR_ECOSYSTEM.md).
 
 ## What UncertainAPI does not intend to rebuild
 
