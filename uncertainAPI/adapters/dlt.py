@@ -176,7 +176,7 @@ def _max_items(source: SourceSpec) -> int | None:
         return None
     if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
         raise DltSourceConfigurationError("dlt options['max_items'] must be a positive integer")
-    return value
+    return cast(int, value)
 
 
 def _read_attr(value: Any, name: str, default: Any = None) -> Any:
@@ -264,5 +264,5 @@ def _records_from_item(item: object) -> list[dict[str, Any]]:
     )
 
 
-def _string_keyed_dict(value: Mapping[object, Any]) -> dict[str, Any]:
+def _string_keyed_dict(value: Mapping[Any, Any]) -> dict[str, Any]:
     return {str(key): item for key, item in value.items()}
