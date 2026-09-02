@@ -51,13 +51,13 @@ standard = [
     "jsonschema>=4.20,<5.0",
 ]
 dlt = [
-    "dlt>=1.30.0,<2.0",
+    "dlt>=1.30.0,<2.0; python_version < \"3.15\"",
 ]
 connectors = [
-    "dlt>=1.30.0,<2.0",
+    "dlt>=1.30.0,<2.0; python_version < \"3.15\"",
 ]
 dev = [
-    "dlt>=1.30.0,<2.0",
+    "dlt>=1.30.0,<2.0; python_version < \"3.15\"",
     "httpx>=0.25.0,<1.0",
     "jmespath>=1.0.1,<2.0",
     "jsonschema>=4.20,<5.0",
