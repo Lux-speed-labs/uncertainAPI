@@ -124,7 +124,7 @@ class DltSourceAdapter:
                 "factory": factory_reference,
                 "resource": requested_resource or _single_selected_resource(produced),
                 "record_count": len(records),
-                "dlt_version": str(getattr(dlt_module, "__version__", "unknown")),
+                "dlt_version": str(_read_attr(dlt_module, "__version__", "unknown")),
             },
         )
 
@@ -179,13 +179,17 @@ def _max_items(source: SourceSpec) -> int | None:
     return value
 
 
+def _read_attr(value: Any, name: str, default: Any = None) -> Any:
+    return getattr(value, name, default)
+
+
 def _resource_names(produced: Any) -> tuple[str, ...]:
-    resources = getattr(produced, "resources", None)
+    resources = _read_attr(produced, "resources")
     if resources is None:
-        name = getattr(produced, "name", None)
+        name = _read_attr(produced, "name")
         return (str(name),) if name else ()
 
-    selected = getattr(resources, "selected", None)
+    selected = _read_attr(resources, "selected")
     if isinstance(selected, Mapping):
         return tuple(str(name) for name in selected)
     if isinstance(resources, Mapping):
@@ -211,7 +215,7 @@ def _select_resource(produced: Any, requested_resource: str | None) -> Any:
             )
         return produced
 
-    selector = getattr(produced, "with_resources", None)
+    selector = _read_attr(produced, "with_resources")
     if callable(selector):
         if names and requested_resource not in names:
             raise DltSourceConfigurationError(
@@ -220,7 +224,7 @@ def _select_resource(produced: Any, requested_resource: str | None) -> Any:
             )
         return selector(requested_resource)
 
-    produced_name = getattr(produced, "name", None)
+    produced_name = _read_attr(produced, "name")
     if produced_name is not None and str(produced_name) == requested_resource:
         return produced
 
